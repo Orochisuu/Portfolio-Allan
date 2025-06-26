@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Allan Pongetti | Desarrollador Junior</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+<style>
+html, body {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+section {
+  scroll-snap-align: start;
+  height: 100vh;
+}
+
+#header-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #6e0f0f;
+  padding: 10px 20px;
+  text-align: center;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+  opacity: 0;
+  transform: translateY(-30px);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+#header-nav.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  visibility: visible;
+}
+
+#header-nav nav a {
+  position: relative;
+  color: rgb(0, 0, 0);
+  margin: 0 10px;
+  text-decoration: none;
+  font-weight: bold;
+  padding-bottom: 4px;
+  transition: color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#header-nav nav a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background-color: white;
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+#header-nav nav a:hover {
+  color: #000000; 
+  transform: scale(1.1);
+}
+
+#header-nav nav a:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+
+</style>
+</head>
+<body class="font-sans text-gray-800">
+
+<!-- HEADER NAV -->
+<header id="header-nav">
+  <nav>
+    <a href="#proyectos" class="btn-animado">Proyectos</a>
+    <a href="#sobre-mi" class="btn-animado">Sobre mí</a>
+    <a href="#skills" class="btn-animado">Skills</a>
+    <a href="#educacion" class="btn-animado">Educación</a>
+    <a href="#contacto" class="btn-animado">Contacto</a>
+  </nav>
+</header>
+<section id="inicio" class="relative bg-black text-white flex flex-col justify-center items-center text-center p-6 overflow-hidden" style="height: 100vh;">
+  <h1 class="text-4xl font-bold relative z-10">Bienvenido</h1>
+  <p class="max-w-xl mt-4 relative z-10">Aquí me conocerás más a mí, Allan y mas sobre mis proyectos</p>
+  <div class="mt-6 space-x-3 relative z-10">
+    <a href="#proyectos" 
+       class="bg-white text-red-500 font-bold rounded-full px-4 py-2 hover:bg-red-100 
+              transition-shadow duration-300 hover:shadow-[0_0_12px_4px_rgba(255,0,0,0.7)]">Portfolio</a>
+    <a href="#sobre-mi" 
+       class="bg-white text-red-500 font-bold rounded-full px-4 py-2 hover:bg-red-100 
+              transition-shadow duration-300 hover:shadow-[0_0_12px_4px_rgba(255,0,0,0.7)]">Sobre mí</a>
+    <a href="#skills" 
+       class="bg-white text-red-500 font-bold rounded-full px-4 py-2 hover:bg-red-100 
+              transition-shadow duration-300 hover:shadow-[0_0_12px_4px_rgba(255,0,0,0.7)]">Skills</a>
+    <a href="#educacion" 
+       class="bg-white text-red-500 font-bold rounded-full px-4 py-2 hover:bg-red-100 
+              transition-shadow duration-300 hover:shadow-[0_0_12px_4px_rgba(255,0,0,0.7)]">Educación</a>
+    <a href="#contacto" 
+       class="bg-white text-red-500 font-bold rounded-full px-4 py-2 hover:bg-red-100 
+              transition-shadow duration-300 hover:shadow-[0_0_12px_4px_rgba(255,0,0,0.7)]">Contacto</a>
+  </div>
+
+  <div id="cuadrados-container" class="absolute inset-0 pointer-events-none"></div>
+</section>
+
+
+<style>
+  #cuadrados-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .cuadrado {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #6e0f0f;
+    border-radius: 3px;
+    box-shadow: 0 0 8px rgb(92, 14, 14);
+  }
+</style>
+
+<script>
+  const container = document.getElementById('cuadrados-container');
+  const containerHeight = container.clientHeight;
+  const containerWidth = container.clientWidth;
+
+  // Esto almacenará la altura apilada por columnas
+  const columnas = [];
+
+  const anchoCuadrado = 22; // ancho + margen
+  const cantidadColumnas = Math.floor(containerWidth / anchoCuadrado);
+
+  // Inicializamos el arreglo de alturas para cada columna en 0 (arriba)
+  for(let i=0; i < cantidadColumnas; i++) {
+    columnas[i] = containerHeight; // empieza vacío, altura desde abajo
+  }
+
+  // Función para crear un cuadrado y animarlo
+  function crearCuadrado() {
+    const cuadrado = document.createElement('div');
+    cuadrado.classList.add('cuadrado');
+
+    // Elegir columna random
+    const colIndex = Math.floor(Math.random() * cantidadColumnas);
+    const left = colIndex * anchoCuadrado;
+
+    cuadrado.style.left = left + 'px';
+    cuadrado.style.top = '-20px';
+
+    container.appendChild(cuadrado);
+
+    let posY = -20;
+    const velocidad = 2 + Math.random() * 3; // velocidad variable
+
+    // Animar caída con requestAnimationFrame
+    function animar() {
+      posY += velocidad;
+
+      if (posY + 20 >= columnas[colIndex]) {
+        // toca suelo o pila, lo dejamos y actualizamos la pila de la columna
+        columnas[colIndex] -= 22; // subimos la pila
+        cuadrado.style.top = columnas[colIndex] + 'px';
+        return; // fin animación
+      } else {
+        cuadrado.style.top = posY + 'px';
+        requestAnimationFrame(animar);
+      }
+    }
+
+    animar();
+  }
+
+  // Crear nuevos cuadrados cada 100ms
+  setInterval(() => {
+    // Si todas las columnas están llenas (altura <= 0), no crear más
+    if (columnas.every(h => h <= 0)) return;
+
+    crearCuadrado();
+  }, 100);
+</script>
+
+
+<!-- PROYECTOS -->
+<section id="proyectos" class="bg-black flex flex-col justify-center items-center p-6">
+  <h2 class="text-3xl font-bold mb-2 text-white">Proyectos</h2>
+  <p class="text-gray-400 mb-6 text-sm text-center"></p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl">
+
+    <!-- Tarjeta de proyecto -->
+    <div class="bg-[#6e0f0f] rounded-xl p-4 text-white hover:scale-105 transition duration-300 cursor-pointer 
+                hover:shadow-[0_0_10px_2px_rgba(110,15,15,0.8)]" 
+         role="button" tabindex="0" aria-label="Abrir detalles del proyecto Invenwear"
+         onkeypress="if(event.key==='Enter'){mostrarModal('modalEcommerce')}" 
+         onclick="mostrarModal('modalEcommerce')">
+      
+      <!-- Imagen -->
+      <img src="img/inven.png" alt="Captura de pantalla Tienda Ecommerce"
+           class="rounded-lg w-full h-36 object-cover mb-3" />
+
+      <!-- Título -->
+      <h3 class="text-lg font-semibold text-white mb-1">Invenwear</h3>
+
+      <!-- Descripción -->
+      <p class="text-gray-300 text-sm mb-3">
+        Desarrollo completo con Kotlin y Java usando servidores virtuales para gestión de productos.
+      </p>
+
+      <!-- Tecnologías -->
+      <div class="flex flex-wrap gap-2 text-xs text-white">
+        <span class="bg-black/30 px-2 py-1 rounded-md border border-white/10">Kotlin</span>
+        <span class="bg-black/30 px-2 py-1 rounded-md border border-white/10">Java</span>
+        <span class="bg-black/30 px-2 py-1 rounded-md border border-white/10">VM</span>
+         <span class="bg-black/30 px-2 py-1 rounded-md border border-white/10">Oracle</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- MODAL -->
+<div id="modalEcommerce" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+  <div class="rounded-xl p-6 max-w-xl w-full relative" style="background-color: rgba(110, 15, 15, 0.5);">
+
+    <button class="absolute top-3 right-4 text-white text-2xl font-bold hover:text-red-400" 
+      aria-label="Cerrar modal Tienda Ecommerce" 
+      onClick="cerrarModal('modalEcommerce')">&times;</button>
+    <h3 class="text-2xl font-bold text-white">Invenwear</h3>
+    <p class="mb-4 text-gray-300">Aplicación que sirve para la gestión de tiendas de ropa pequeñas, con escaneo mediante código de barras, control de acceso y control de entradas y salidas tanto de ropa como de stock</p>
+    <h4 class="font-semibold text-lg text-white">Herramientas utilizadas:</h4>
+    <div class="flex items-center gap-4 flex-wrap mt-3">
+      <div class="bg-black rounded-full p-2 hover:scale-110 hover:bg-purple-600 transition">
+        <img src="img/eclipseide.svg" alt="Eclipse IDE" class="w-8 h-8" />
+      </div>
+      <div class="bg-black rounded-full p-2 hover:scale-110 hover:bg-sky-600 transition">
+        <img src="img/androidstudio.svg" alt="Android Studio" class="w-8 h-8" />
+      </div>
+      <div class="bg-black rounded-full p-2 hover:scale-110 hover:bg-orange-600 transition">
+        <img src="img/database.svg" alt="Base de Datos" class="w-8 h-8" />
+      </div>
+    </div>
+        <h4 class="font-semibold text-lg text-white">Funcionamento</h4>
+        
+      <img src="img/image.png" alt="Cliente" class="rounded-lg w-full h-60 object-contain" />
+    <h4 class="font-semibold text-lg mt-4 text-white">Demostración:</h4>
+    <video id="videoDemo" controls class="w-full rounded mt-2">
+      <source src="video/parte-1_p6R0kCMR.mp4" type="video/mp4" />
+      Tu navegador no soporta el video.
+    </video>
+   <div class="mt-6 flex justify-center">
+  <a href="https://github.com/Orochisuu/Invenwear.git" target="_blank" rel="noopener noreferrer">
+    <div class="bg-black rounded-full p-2 hover:scale-110 hover:bg-blue-600 transition">
+      <img src="img/github.svg" alt="Base de Datos" class="w-8 h-8" />
+    </div>
+  </a>
+</div>
+
+  </div>
+</div>
+
+<!-- SOBRE MÍ -->
+<section id="sobre-mi" class="bg-black flex flex-col md:flex-row justify-center items-center p-6 text-center md:text-left gap-8">
+  <!-- Imagen -->
+  <img 
+    src="img/fotoallan.jpg" 
+    alt="Foto de Allan" 
+    class="rounded-full w-40 h-40 md:w-48 md:h-48 object-cover border-4 border-[#6e0f0f] shadow-lg"
+  />
+  
+  <!-- Texto y botón -->
+  <div class="max-w-2xl text-white flex flex-col justify-center items-center md:items-start gap-6">
+    <div>
+      <h2 class="text-3xl font-bold mb-3">Sobre mí</h2>
+      <p>Soy Allan, desarrollador junior apasionado por crear soluciones web y móviles que faciliten la vida a las personas. Tengo experiencia en Html, Kotlin y otras tecnologías modernas. Me encanta aprender y trabajar en equipo.</p>
+    </div>
+
+    <!-- Botón para descargar CV -->
+    <a href="docs/Cv Allan Pongetti Desarrollador Junior.pdf" download class="bg-[#6e0f0f] hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition transform hover:scale-105">
+      Descargar CV
+    </a>
+  </div>
+</section>
+
+
+<!-- TECNOLOGÍAS CENTRADO EN PANTALLA -->
+<section id="skills" class="bg-black text-white min-h-screen flex items-center justify-center px-4">
+  <div>
+    <h2 class="text-4xl font-bold text-center mb-12">Tecnologías</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+      
+      <!-- FRONT-END -->
+      <div style="background-color: #6e0f0f;" 
+           class="text-white rounded-xl p-6 shadow-lg transform transition duration-300 
+                  hover:scale-105 hover:shadow-[0_0_15px_4px_rgba(110,15,15,0.9)] 
+                  flex flex-col items-center justify-center text-center">
+        <h3 class="font-bold text-xl mb-4">FRONT-END</h3>
+        <div class="flex gap-6">
+          <img src="img/html5.svg" alt="HTML" class="w-12 h-12" />
+          <img src="img/css.svg" alt="CSS" class="w-12 h-12" />
+          <img src="img/javascript.svg" alt="JavaScript" class="w-12 h-12" />
+        </div>
+      </div>
+
+      <!-- BACK-END -->
+      <div style="background-color: #6e0f0f;" 
+           class="text-white rounded-xl p-6 shadow-lg transform transition duration-300 
+                  hover:scale-105 hover:shadow-[0_0_15px_4px_rgba(110,15,15,0.9)] 
+                  flex flex-col items-center justify-center text-center">
+        <h3 class="font-bold text-xl mb-4">BACK-END</h3>
+        <div class="flex gap-6">
+          <img src="img/java.svg" alt="Java" class="w-12 h-12" />
+          <img src="img/socket.svg" alt="Sockets" class="w-12 h-12" />
+          <img src="img/spring.svg" alt="Spring" class="w-12 h-12" />
+          <img src="img/xml.svg" alt="Xml" class="w-12 h-12" />
+          <img src="img/kotlin.svg" alt="Kotlin" class="w-12 h-12" />
+        </div>
+      </div>
+
+      <!-- BASES DE DATOS -->
+      <div style="background-color: #6e0f0f;" 
+           class="text-white rounded-xl p-6 shadow-lg transform transition duration-300 
+                  hover:scale-105 hover:shadow-[0_0_15px_4px_rgba(110,15,15,0.9)] 
+                  flex flex-col items-center justify-center text-center">
+        <h3 class="font-bold text-xl mb-4">Bases de datos</h3>
+        <div class="flex gap-6">
+          <img src="img/oracle.svg" alt="Oracle" class="w-12 h-12" />
+          <img src="img/mysql.svg" alt="MySQL" class="w-12 h-12" />
+          <img src="img/mongodb.svg" alt="mongo" class="w-12 h-12" />
+        </div>
+      </div>
+
+      <!-- HERRAMIENTAS -->
+      <div style="background-color: #6e0f0f;" 
+           class="text-white rounded-xl p-6 shadow-lg transform transition duration-300 
+                  hover:scale-105 hover:shadow-[0_0_15px_4px_rgba(110,15,15,0.9)] 
+                  flex flex-col items-center justify-center text-center">
+        <h3 class="font-bold text-xl mb-4">HERRAMIENTAS</h3>
+        <div class="flex flex-wrap gap-4 justify-center">
+          <img src="img/github.svg" alt="GitHub" class="w-10 h-10" />
+          <img src="img/visual-studio.svg" alt="Visual Studio" class="w-10 h-10" />
+          <img src="img/eclipseide.svg" alt="Eclipse" class="w-10 h-10" />
+          <img src="img/androidstudio.svg" alt="Android Studio" class="w-10 h-10" />
+          <img src="img/apachenetbeanside.svg" alt="NetBeans" class="w-10 h-10" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- EDUCACIÓN -->
+<section id="educacion" class="bg-black flex flex-col justify-center items-center p-6 text-center">
+  <h2 class="text-3xl font-bold text-white">Datos académicos</h2>
+  <div class="mt-4 flex flex-col items-center space-y-4">
+    <div class="bg-white rounded-full p-6 shadow hover:bg-[#6e0f0f] hover:text-white transition w-full max-w-md">
+      <h3 class="text-xl font-bold">(2023–2025)</h3>
+      <p class="text-lg">Ciclo Superior de Desarrollo de Aplicaciones Multiplataforma</p>
+      <span class="text-gray-500 group-hover:text-gray-200">IES Ataúlfo Argenta</span>
+    </div>
+    <div class="bg-white rounded-full p-6 shadow hover:bg-[#6e0f0f] hover:text-white transition w-full max-w-md">
+      <h3 class="text-xl font-bold">(2021–2023)</h3>
+      <p class="text-lg">Bachiller de Ciencias Sociales</p>
+      <span class="text-gray-500 group-hover:text-gray-200">IES Doctor José Zapatero Domínguez</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- CONTACTO -->
+<section id="contacto"
+         class="bg-black flex flex-col justify-center items-center text-center py-16"
+         >
+  <h2 class="text-3xl font-semibold mb-10">Contacto</h2>
+
+  <div class="flex flex-col items-center gap-6 text-lg">
+    <!-- Teléfono -->
+
+      <a href="https://wa.me/34678097470" target="_blank"
+        class="flex items-center gap-4 bg-white px-6 py-4 rounded-xl shadow-md hover:shadow-green-400 hover:bg-green-100 transition duration-300">
+        <img src="img/whatsapp.svg" alt="WhatsApp" class="w-8 h-8" />
+        <span class="text-gray-800">+34 678 097 470</span>
+      </a>
+
+
+    <!-- Correo electrónico -->
+    <a href="mailto:allanpongetti@gmail.com"
+       class="flex items-center gap-4 bg-white px-6 py-4 rounded-xl shadow-md hover:shadow-red-400 transition duration-300 hover:bg-red-100 group">
+       <img src="img/gmail.svg" alt="Eclipse IDE" class="w-8 h-8" />
+      <span class="text-gray-800 group-hover:text-red-700">allanpongetti@gmail.com</span>
+    </a>
+
+    <!-- LinkedIn -->
+    <a href="https://www.linkedin.com/in/allan-pongetti-a42410368" target="_blank"
+       class="flex items-center gap-4 bg-white px-6 py-4 rounded-xl shadow-md hover:shadow-blue-400 transition duration-300 hover:bg-blue-100 group">
+       <img src="img/linkedin.svg" alt="Eclipse IDE" class="w-8 h-8" />
+      <span class="text-gray-800 group-hover:text-blue-700">linkedin.com/in/allan-pongetti-a42410368</span>
+    </a>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer class="bg-red-600 text-white text-center py-3">
+  © Allan | Desarrollador Web
+</footer>
+
+<!-- Scripts -->
+
+
+<script>
+function mostrarModal(id) {
+  document.getElementById(id).classList.remove("hidden");
+  // Ocultar el header
+  const header = document.getElementById("header-nav");
+  header.classList.remove("show"); 
+}
+
+
+  function cerrarModal(id) {
+    const modal = document.getElementById(id);
+    modal.classList.add('hidden');
+
+    // Encuentra todos los videos dentro del modal y páusalos
+    const videos = modal.querySelectorAll('video');
+    videos.forEach(video => {
+      video.pause();
+      video.currentTime = 0; // Opcional: vuelve al inicio
+    });
+  }
+
+
+
+// Función de utilidad para saber si un elemento está en la vista
+function isElementInView(el) {
+  const rect = el.getBoundingClientRect();
+  return (
+    rect.top >= 0 && 
+    rect.left >= 0 && 
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && 
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  );
+}
+
+
+const header = document.getElementById("header-nav");
+const botonesInicio = document.querySelector("#inicio div");
+
+if (botonesInicio && header) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) {
+        header.classList.add("show");
+        header.classList.remove("opacity-0");
+      } else {
+        header.classList.remove("show");
+      }
+    });
+  }, { root: null, threshold: 0 });
+  observer.observe(botonesInicio);
+}
+AOS.init();
+</script>
+
+</body>
+</html>
