@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- META TAGS OPEN GRAPH -->
+<meta property="og:title" content="Invenwear - Gestión de tiendas de ropa" />
+<meta property="og:description" content="App para escanear, registrar y controlar stock de ropa en tiendas pequeñas." />
+<meta property="og:image" content="https://tusitio.vercel.app/img/preview.jpg" />
+<meta property="og:url" content="https://tusitio.vercel.app" />
+<meta property="og:type" content="website" />
+
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0" />
 <title>Allan Pongetti | Desarrollador Junior</title>
@@ -136,15 +143,14 @@ section {
   const containerHeight = container.clientHeight;
   const containerWidth = container.clientWidth;
 
-  // Esto almacenará la altura apilada por columnas
   const columnas = [];
 
   const anchoCuadrado = 22; // ancho + margen
   const cantidadColumnas = Math.floor(containerWidth / anchoCuadrado);
 
-  // Inicializamos el arreglo de alturas para cada columna en 0 (arriba)
+
   for(let i=0; i < cantidadColumnas; i++) {
-    columnas[i] = containerHeight; // empieza vacío, altura desde abajo
+    columnas[i] = containerHeight;
   }
 
   // Función para crear un cuadrado y animarlo
@@ -169,7 +175,7 @@ section {
       posY += velocidad;
 
       if (posY + 20 >= columnas[colIndex]) {
-        // toca suelo o pila, lo dejamos y actualizamos la pila de la columna
+   // toca suelo o pila, lo dejamos y actualizamos la pila de la columna
         columnas[colIndex] -= 22; // subimos la pila
         cuadrado.style.top = columnas[colIndex] + 'px';
         return; // fin animación
@@ -184,7 +190,7 @@ section {
 
   // Crear nuevos cuadrados cada 100ms
   setInterval(() => {
-    // Si todas las columnas están llenas (altura <= 0), no crear más
+ // Si todas las columnas están llenas (altura <= 0), no crear más
     if (columnas.every(h => h <= 0)) return;
 
     crearCuadrado();
@@ -441,7 +447,7 @@ function mostrarModal(id) {
     const videos = modal.querySelectorAll('video');
     videos.forEach(video => {
       video.pause();
-      video.currentTime = 0; // Opcional: vuelve al inicio
+      video.currentTime = 0; 
     });
   }
 
